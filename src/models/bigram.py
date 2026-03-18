@@ -1,8 +1,6 @@
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
-from data.dataset import fetch_raw_data, get_batch, tokenize_data
-from data.tokenizer import CharTokenizer
 
 
 class BigramLanguageModel(nn.Module):
@@ -33,12 +31,3 @@ class BigramLanguageModel(nn.Module):
             idx_next = torch.multinomial(probs, 1)
             idx = torch.cat((idx, idx_next), dim=1)
         return idx
-
-
-data = fetch_raw_data()
-vocabulary = sorted(set(data))
-tokenizer = CharTokenizer(vocabulary)
-tokens = tokenize_data(data, tokenizer)
-train_x, train_y = get_batch(tokens)
-model = BigramLanguageModel(len(vocabulary))
-logits, loss = model(train_x, train_y)
