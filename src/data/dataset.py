@@ -18,12 +18,16 @@ def save_raw_data(data: str, path: str) -> None:
         f.write(data)
 
 
-def tokenize_data(data: str, tokenizer: Tokenizer, to_tensor: bool = True) -> Union[torch.Tensor, List[int]]:
+def tokenize_data(
+    data: str, tokenizer: Tokenizer, to_tensor: bool = True
+) -> Union[torch.Tensor, List[int]]:
     tokens = tokenizer.encode(data)
     return torch.tensor(tokens, dtype=torch.long) if to_tensor else tokens
 
 
-def get_batch(data: torch.Tensor, batch_size: int = 4, block_size: int = 8) -> Tuple[torch.Tensor, torch.Tensor]:
+def get_batch(
+    data: torch.Tensor, batch_size: int = 4, block_size: int = 8
+) -> Tuple[torch.Tensor, torch.Tensor]:
     random_ints = torch.randint(0, len(data) - block_size, (batch_size,))
     x = torch.stack([data[i : i + block_size] for i in random_ints])
     y = torch.stack([data[i + 1 : i + block_size + 1] for i in random_ints])

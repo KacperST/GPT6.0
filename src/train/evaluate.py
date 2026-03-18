@@ -5,7 +5,10 @@ from collections.abc import Callable
 
 @torch.no_grad()
 def evaluate_model(
-    model: nn.Module, data: torch.Tensor, get_batch_fn: Callable, max_eval_steps: int = 100
+    model: nn.Module,
+    data: torch.Tensor,
+    get_batch_fn: Callable,
+    max_eval_steps: int = 100,
 ) -> torch.Tensor:
     model.eval()
     losses = []
