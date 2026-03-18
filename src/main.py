@@ -15,8 +15,8 @@ MAX_ITERS = 1000
 EVAL_INTERVAL = 300
 LEARNING_RATE = 1e-3
 MAX_NEW_TOKENS = 100
-device = "cuda" if torch.cuda.is_available() else "cpu"
-eval_iters = 200
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+
 torch.manual_seed(1337)
 
 def main():
@@ -25,7 +25,7 @@ def main():
     tokenizer = CharTokenizer(vocabulary)
     data = tokenize_data(data=raw_data, tokenizer=tokenizer, to_tensor=True)
     model = BigramLanguageModel(len(vocabulary))
-    model = model.to(device=device)
+    model = model.to(device=DEVICE)
     train_model(model, data, get_batch, MAX_ITERS, evaluate_model, learning_rate=1e-3)
     idx_first = torch.zeros(1,1, dtype=torch.long)
     generated_tokens = model.generate(idx_first,max_new_tokens=MAX_NEW_TOKENS)
