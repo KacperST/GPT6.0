@@ -21,6 +21,6 @@ def train_model(
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        if step % 500 == 0 or step == max_iters - 1:
+        if step % 100 == 0:
             loss = eval_fn(model, data, get_batch_fn)
             print(f"Step: {step}, loss: {loss}")
