@@ -4,7 +4,15 @@ from torch.optim import AdamW
 import torch
 import torch.nn as nn
 
-def train_model(model: nn.Module, data: torch.Tensor, get_batch_fn: Callable, max_iters: int, eval_fn: Callable, learning_rate: float = 1e-4) -> None:
+
+def train_model(
+    model: nn.Module,
+    data: torch.Tensor,
+    get_batch_fn: Callable,
+    max_iters: int,
+    eval_fn: Callable,
+    learning_rate: float = 1e-4,
+) -> None:
     optimizer = AdamW(model.parameters(), lr=learning_rate)
     for step in range(max_iters):
         model.train()
@@ -16,4 +24,3 @@ def train_model(model: nn.Module, data: torch.Tensor, get_batch_fn: Callable, ma
         if step % 100 == 0:
             loss = eval_fn(model, data, get_batch_fn)
             print(f"Step: {step}, loss: {loss}")
-

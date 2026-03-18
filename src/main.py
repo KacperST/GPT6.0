@@ -8,7 +8,6 @@ from models.bigram import BigramLanguageModel
 from train.trainer import train_model
 from train.evaluate import evaluate_model
 
-
 BATCH_SIZE = 32
 BLOCK_SIZE = 8
 MAX_ITERS = 1000
@@ -19,6 +18,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 torch.manual_seed(1337)
 
+
 def main():
     raw_data = fetch_raw_data()
     vocabulary = sorted(set(raw_data))
@@ -27,15 +27,11 @@ def main():
     model = BigramLanguageModel(len(vocabulary))
     model = model.to(device=DEVICE)
     train_model(model, data, get_batch, MAX_ITERS, evaluate_model, learning_rate=1e-3)
-    idx_first = torch.zeros(1,1, dtype=torch.long).to(DEVICE)
-    generated_tokens = model.generate(idx_first,max_new_tokens=MAX_NEW_TOKENS)
+    idx_first = torch.zeros(1, 1, dtype=torch.long).to(DEVICE)
+    generated_tokens = model.generate(idx_first, max_new_tokens=MAX_NEW_TOKENS)
     output = tokenizer.decode(generated_tokens.tolist()[0])
     print(f"\nGenerated sequence:{output}")
 
+
 if __name__ == "__main__":
     main()
-
-
- 
-
-
