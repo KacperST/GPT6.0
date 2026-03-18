@@ -9,9 +9,7 @@ class GPT(nn.Module):
     def __init__(self, vocab_size: int, embed_dim: int, block_size: int):
         super().__init__()
         self.embeddings = nn.Embedding(vocab_size, embed_dim)
-        self.sa_head = SelfAttention(
-            embed_dim, head_size=embed_dim, block_size=block_size
-        )
+        self.sa_head = SelfAttention(embed_dim, head_size=embed_dim, block_size=block_size)
         self.positions = nn.Embedding(block_size, embed_dim)
         self.lm_head = nn.Linear(embed_dim, vocab_size)
         self.block_size = block_size
