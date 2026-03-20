@@ -1,7 +1,8 @@
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
-from models.self_attention import SelfAttention
+from models.self_attention import Head
+from models.multi_head_attention import MultiHeadAttention
 
 
 class GPT(nn.Module):
@@ -9,12 +10,12 @@ class GPT(nn.Module):
     def __init__(self, vocab_size: int, embed_dim: int, block_size: int):
         super().__init__()
         self.embeddings = nn.Embedding(vocab_size, embed_dim)
-        self.sa_head = SelfAttention(embed_dim, head_size=embed_dim, block_size=block_size)
         self.positions = nn.Embedding(block_size, embed_dim)
+        self.sa_head = MultiHeadAttention(embed_dim=embed_dim, num_heads=8, block_size=block_size)
         self.lm_head = nn.Linear(embed_dim, vocab_size)
         self.block_size = block_size
 
-    def forward(self, idx, target=None):
+    def forward(self, idx: torch.Tensor, target=None):
         B, T = idx.shape
         token_embeddings = self.embeddings(idx)  # B,T,C
         position_embeddings = self.positions(torch.arange(0, T))  # T, C
@@ -31,7 +32,7 @@ class GPT(nn.Module):
         loss = F.cross_entropy(logits, target)
         return logits, loss
 
-    def generate(self, idx: int, max_new_tokens: int = 500):
+    def generate(self, idx: torch.Tensor, max_new_tokens: int = 500):
         for _ in range(max_new_tokens):
             idx_cond = idx[:, -self.block_size :]
             logits, _ = self(idx_cond)

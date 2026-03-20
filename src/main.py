@@ -14,7 +14,7 @@ BLOCK_SIZE = 8
 MAX_ITERS = 5000
 EVAL_INTERVAL = 300
 LEARNING_RATE = 1e-3
-MAX_NEW_TOKENS = 100
+MAX_NEW_TOKENS = 300
 EMBEDING_DIM = 32
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -38,7 +38,7 @@ def main():
 if __name__ == "__main__":
     main()
 """
-OUTPUT
+OUTPUT - SELF ATTENTION (single head)
 Step: 0, loss: 4.286160469055176
 Step: 500, loss: 3.2832372188568115
 Step: 1000, loss: 3.1075868606567383
@@ -58,4 +58,42 @@ Thutour; pe thy, wresmyo ff h
 Aghe carveldro:
 An mof KVEEGOLE:
 We QSwhir, IOULroun qs imie wham
+"""
+
+"""
+OUTPUT - SELF ATTENTION (8 heads)
+Step: 0, loss: 4.179450511932373
+Step: 500, loss: 2.9266843795776367
+Step: 1000, loss: 2.6438372135162354
+Step: 1500, loss: 2.6479485034942627
+Step: 2000, loss: 2.535628080368042
+Step: 2500, loss: 2.5052449703216553
+Step: 3000, loss: 2.5269439220428467
+Step: 3500, loss: 2.4310178756713867
+Step: 4000, loss: 2.4090628623962402
+Step: 4500, loss: 2.4429306983947754
+Step: 4999, loss: 2.407313346862793
+
+Generated sequence:
+MLO:
+AThe ban lome to thas shet than,
+Yofst's,
+Nt;
+NI cer shrouteor yinth his ceish eatrens o to Puls soem
+
+Pane thir,
+
+MOTORIY:
+JI
+WUn:
+Na'er bngaur Youinr momly will
+Lhaige by te.
+
+
+
+B! ist.
+
+Whing,
+&in fone tharl bur, teny hay wheti n yoiatw mysi thak ghou srad of haren eie shive beglen'd:
+SiR CA
 """
