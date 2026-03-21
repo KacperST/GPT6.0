@@ -16,7 +16,7 @@ A PyTorch implementation of a **GPT-inspired Language Model** featuring self-att
 src/
 ├── main.py                      # Entry point – main pipeline
 ├── data/
-│   ├── dataset.py               # Data loading and preparation
+│   ├── dataset.py               # Data loading and 
 │   └── tokenizer.py             # Encoder/decoder
 ├── models/
 │   ├── gpt.py                   # GPT Language Model architecture
