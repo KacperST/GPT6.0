@@ -19,9 +19,10 @@ src/
 │   ├── dataset.py               # Data loading and 
 │   └── tokenizer.py             # Encoder/decoder
 ├── models/
+|   ├── bigram.py                # Old Bigram Language Model architecture (no attention)
 │   ├── gpt.py                   # GPT Language Model architecture
-│   ├── self_attention.py         # Single-head self-attention mechanism
-│   └── multi_head_attention.py   # Multi-head attention blocks
+│   ├── head.py                  # Single-head self-attention mechanism
+│   └── multi_head_attention.py  # Multi-head attention blocks
 └── train/
     ├── trainer.py               # Training loop
     └── evaluate.py              # Model evaluation
