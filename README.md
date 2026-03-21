@@ -1,28 +1,30 @@
 # GPT6.0
 
-A compact implementation of a **Bigram Language Model** in PyTorch. This project demonstrates fundamental concepts of natural language modeling, including tokenization, training neural language models, and text generation.
+A PyTorch implementation of a **GPT-inspired Language Model** featuring self-attention mechanisms. This project demonstrates fundamental concepts of modern neural language modeling, including tokenization, self-attention blocks, multi-head attention, and text generation.
 
 ## Features
 
-- 🎯 **Bigram Language Model** - a simple yet effective model for predicting the next token based on the previous one
+- 🎯 **GPT Architecture** - transformer-based language model with self-attention
+- 🧠 **Self-Attention Mechanism** - single-head attention for context understanding
+- 👥 **Multi-Head Attention** - parallel attention heads for diverse feature extraction
 - 🔤 **Character-level Tokenizer** - tokenization at the individual character level
-- 🚂 **Training with AdamW** - model optimization using a modern optimizer
-- 📊 **Model Evaluation** - performance assessment on a test set
 - 🎲 **Text Generation** - creating new text sequences based on the trained model
 
 ## Project Structure
 
 ```
 src/
-├── main.py                # Entry point – main pipeline
+├── main.py                      # Entry point – main pipeline
 ├── data/
-│   ├── dataset.py         # Data loading and preparation
-│   └── tokenizer.py       # Encoder/decoder
+│   ├── dataset.py               # Data loading and preparation
+│   └── tokenizer.py             # Encoder/decoder
 ├── models/
-│   └── bigram.py          # Bigram Language Model architecture
+│   ├── gpt.py                   # GPT Language Model architecture
+│   ├── self_attention.py         # Single-head self-attention mechanism
+│   └── multi_head_attention.py   # Multi-head attention blocks
 └── train/
-    ├── trainer.py         # Training loop
-    └── evaluate.py        # Model evaluation
+    ├── trainer.py               # Training loop
+    └── evaluate.py              # Model evaluation
 ```
 
 ## Requirements
@@ -63,14 +65,17 @@ uv run src/main.py
 ## How It Works
 
 1. **Tokenization**: Text is converted to a sequence of character indices
-2. **Forward Pass**: Model takes token sequence and predicts next token
-3. **Loss**: Cross-entropy loss computed between predictions and actual tokens
-4. **Backprop**: Gradients update model weights
-5. **Generation**: Model autoregressively generates new tokens based on previous ones
+2. **Embedding**: Tokens are embedded into a continuous vector space with positional encodings
+3. **Self-Attention**: Single-head attention layer captures relationships between tokens
+4. **Multi-Head Attention**: Multiple attention heads learn different attention patterns in parallel
+5. **Output Projection**: Attention output is projected to vocabulary size for next token prediction
+6. **Loss**: Cross-entropy loss computed between predictions and actual tokens
+7. **Backprop**: Gradients update model weights
+8. **Generation**: Model autoregressively generates new tokens based on previous ones using attention context
 
 ## Notes
 
 - This is a **simplified** implementation for educational purposes
-- Bigram model represents the simplest form of attention-free language modeling
-- Will be extended to attention mechanisms in near future versions
+- Features self-attention mechanisms inspired by the Transformer architecture
+- Multi-head attention improves model capacity by learning diverse attention patterns
 

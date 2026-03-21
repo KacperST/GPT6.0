@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
-from models.self_attention import Head
+from models.head import Head
 from models.multi_head_attention import MultiHeadAttention
 
 
