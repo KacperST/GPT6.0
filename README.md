@@ -16,7 +16,7 @@ A PyTorch implementation of a **GPT-inspired Language Model** featuring self-att
 src/
 ├── main.py                      # Entry point – main pipeline
 ├── data/
-│   ├── dataset.py               # Data loading and 
+│   ├── dataset.py               # Data loading and basic processing
 │   └── tokenizer.py             # Encoder/decoder
 ├── models/
 |   ├── bigram.py                # Old Bigram Language Model architecture (no attention)
