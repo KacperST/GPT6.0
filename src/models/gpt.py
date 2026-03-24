@@ -4,6 +4,7 @@ from torch.nn import functional as F
 from models.head import Head
 from models.multi_head_attention import MultiHeadAttention
 
+DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class GPT(nn.Module):
 
@@ -18,7 +19,7 @@ class GPT(nn.Module):
     def forward(self, idx: torch.Tensor, target=None):
         B, T = idx.shape
         token_embeddings = self.embeddings(idx)  # B,T,C
-        position_embeddings = self.positions(torch.arange(0, T))  # T, C
+        position_embeddings = self.positions(torch.arange(0, T, device=DEVICE))  # T, C
         x = token_embeddings + position_embeddings
         x = self.sa_head(x)
         logits = self.lm_head(x)
