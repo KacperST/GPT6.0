@@ -15,6 +15,6 @@ def evaluate_model(
     for _ in range(max_eval_steps):
         X, y = get_batch_fn(data)
         _, loss = model(X, y)
-        losses.append(loss)
+        losses.append(loss.item())
     model.train()
     return sum(losses) / len(losses)
