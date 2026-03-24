@@ -9,13 +9,13 @@ from train.trainer import train_model
 from train.evaluate import evaluate_model
 from models.gpt import GPT
 
-BATCH_SIZE = 32
-BLOCK_SIZE = 16
-MAX_ITERS = 5000
+BATCH_SIZE = 64
+BLOCK_SIZE = 128
+MAX_ITERS = 10_000
 EVAL_INTERVAL = 300
-LEARNING_RATE = 1e-3
+LEARNING_RATE = 3e-4
 MAX_NEW_TOKENS = 300
-EMBEDING_DIM = 64
+EMBEDING_DIM = 128
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 torch.manual_seed(1337)
