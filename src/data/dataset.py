@@ -25,6 +25,6 @@ def tokenize_data(data: str, tokenizer: Tokenizer, to_tensor: bool = True) -> Un
 
 def get_batch(data: torch.Tensor, batch_size: int = 4, block_size: int = 8) -> Tuple[torch.Tensor, torch.Tensor]:
     random_ints = torch.randint(0, len(data) - block_size, (batch_size,))
-    x = torch.stack([data[i : i + block_size] for i in random_ints])
+    x = torch.stack([data[i : i + block_size] for i in random_ints]).to(DE)
     y = torch.stack([data[i + 1 : i + block_size + 1] for i in random_ints])
     return x, y

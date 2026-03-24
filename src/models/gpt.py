@@ -3,25 +3,29 @@ import torch.nn as nn
 from torch.nn import functional as F
 from models.head import Head
 from models.multi_head_attention import MultiHeadAttention
+from models.block import DecoderBlock
 
-DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class GPT(nn.Module):
 
-    def __init__(self, vocab_size: int, embed_dim: int, block_size: int):
+    def __init__(self, vocab_size: int, embed_dim: int, block_size: int, num_heads: int = 8):
         super().__init__()
         self.embeddings = nn.Embedding(vocab_size, embed_dim)
         self.positions = nn.Embedding(block_size, embed_dim)
-        self.sa_head = MultiHeadAttention(embed_dim=embed_dim, num_heads=8, block_size=block_size)
+        self.decoder_blocks = nn.ModuleList([DecoderBlock(embed_dim, num_heads, block_size) for _ in range(12)])
         self.lm_head = nn.Linear(embed_dim, vocab_size)
         self.block_size = block_size
 
     def forward(self, idx: torch.Tensor, target=None):
         B, T = idx.shape
         token_embeddings = self.embeddings(idx)  # B,T,C
-        position_embeddings = self.positions(torch.arange(0, T, device=DEVICE))  # T, C
+        device = idx.device
+        position_embeddings = self.positions(torch.arange(0, T, device=device))  # T, C
         x = token_embeddings + position_embeddings
-        x = self.sa_head(x)
+
+        for block in self.decoder_blocks:
+            x = block(x)
+
         logits = self.lm_head(x)
         B, T, C = logits.shape
 
