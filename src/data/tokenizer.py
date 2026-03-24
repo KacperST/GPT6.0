@@ -1,5 +1,6 @@
 from typing import List
 from abc import ABC, abstractmethod
+import tiktoken
 
 
 class Tokenizer(ABC):
@@ -24,3 +25,16 @@ class CharTokenizer(Tokenizer):
 
     def decode(self, tokens: List[int]) -> str:
         return "".join([self.int_to_char[t] for t in tokens])
+
+
+class GPTTokenizer(Tokenizer):
+    def __init__(
+        self,
+    ):
+        self.enc = tiktoken.get_encoding("gpt2")
+
+    def encode(self, text: str) -> List[int]:
+        return self.enc.encode(text)
+
+    def decode(self, tokens: List[int]):
+        return self.enc.decode(tokens)

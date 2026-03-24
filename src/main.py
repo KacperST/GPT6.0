@@ -3,7 +3,7 @@ import numpy as np
 import torch.nn as nn
 from torch.nn import functional as F
 from data.dataset import fetch_raw_data, get_batch, tokenize_data
-from data.tokenizer import CharTokenizer
+from data.tokenizer import CharTokenizer, GPTTokenizer
 from models.bigram import BigramLanguageModel
 from train.trainer import train_model
 from train.evaluate import evaluate_model
@@ -11,11 +11,14 @@ from models.gpt import GPT
 
 BATCH_SIZE = 64
 BLOCK_SIZE = 128
-MAX_ITERS = 10_000
-EVAL_INTERVAL = 300
+MAX_ITERS = 4000
+EVAL_INTERVAL = 50
 LEARNING_RATE = 3e-4
-MAX_NEW_TOKENS = 300
+MAX_NEW_TOKENS = 100
 EMBEDING_DIM = 128
+VOCAB_SIZE = 50257
+NUM_HEADS = 8
+NUM_DECODER_BLOCKS = 6
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 torch.manual_seed(1337)
@@ -23,14 +26,13 @@ torch.manual_seed(1337)
 
 def main():
     raw_data = fetch_raw_data()
-    vocabulary = sorted(set(raw_data))
-    tokenizer = CharTokenizer(vocabulary)
+    tokenizer = GPTTokenizer()
     data = tokenize_data(data=raw_data, tokenizer=tokenizer, to_tensor=True)
     n = int(0.8 * len(data))
     train_data, val_data = data[:n], data[n:]
-    model = GPT(len(vocabulary), EMBEDING_DIM, BLOCK_SIZE, num_heads=8)
+    model = GPT(VOCAB_SIZE, EMBEDING_DIM, BLOCK_SIZE, num_heads=NUM_HEADS, num_decoder_blocks=NUM_DECODER_BLOCKS)
     model = model.to(device=DEVICE)
-    train_model(model, train_data, val_data, get_batch, MAX_ITERS, evaluate_model, learning_rate=1e-3)
+    train_model(model, train_data, val_data, get_batch, MAX_ITERS, evaluate_model, learning_rate=LEARNING_RATE)
     idx_first = torch.zeros(1, 1, dtype=torch.long).to(DEVICE)
     generated_tokens = model.generate(idx_first, max_new_tokens=MAX_NEW_TOKENS)
     output = tokenizer.decode(generated_tokens.tolist()[0])
