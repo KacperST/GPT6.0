@@ -8,14 +8,14 @@ from models.normalization import LayerNormalization
 class GPT(nn.Module):
 
     def __init__(
-        self, vocab_size: int, embed_dim: int, block_size: int, num_heads: int = 8, num_decored_blocks: int = 12
+        self, vocab_size: int, embed_dim: int, block_size: int, num_heads: int = 8, num_decoder_blocks: int = 12
     ):
         super().__init__()
-        self.num_decoded_blocks = num_decored_blocks
+        self.num_decoder_blocks = num_decoder_blocks
         self.embeddings = nn.Embedding(vocab_size, embed_dim)
         self.positions = nn.Embedding(block_size, embed_dim)
         self.decoder_blocks = nn.ModuleList(
-            [DecoderBlock(embed_dim, num_heads, block_size) for _ in range(num_decored_blocks)]
+            [DecoderBlock(embed_dim, num_heads, block_size) for _ in range(num_decoder_blocks)]
         )
         self.ln1 = LayerNormalization(embed_dim=embed_dim)
         self.lm_head = nn.Linear(embed_dim, vocab_size)
