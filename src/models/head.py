@@ -21,4 +21,5 @@ class Head(nn.Module):
         wei = Q @ K.transpose(-2, -1) * head_dim**-0.5
         wei = wei.masked_fill(self.tril[:T, :T] == 0, float("-inf"))
         wei = F.softmax(wei, dim=-1)
+        wei = F.dropout(wei, p=0.1)
         return wei @ V

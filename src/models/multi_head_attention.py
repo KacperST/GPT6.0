@@ -10,10 +10,12 @@ class MultiHeadAttention(nn.Module):
         super().__init__()
         self.head_size = embed_dim // num_heads
         self.wo = nn.Linear(embed_dim, embed_dim)
+        self.wo.SCALE_INIT = 1
         self.heads = nn.ModuleList(
             [Head(embed_dim=embed_dim, head_size=self.head_size, block_size=block_size) for _ in range(num_heads)]
         )
+        self.dropout = nn.Dropout(p=0.1)
 
     def forward(self, x):
         x = torch.cat([h(x) for h in self.heads], dim=-1)
-        return self.wo(x)
+        return self.dropout(self.wo(x))
