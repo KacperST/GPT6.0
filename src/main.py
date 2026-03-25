@@ -27,7 +27,9 @@ torch.manual_seed(1337)
 
 def main():
     raw_data = fetch_raw_data()
-    tokenizer = GPTTokenizer()
+    vocabulary = sorted(set(raw_data))
+    tokenizer = CharTokenizer(vocabulary)
+    VOCAB_SIZE = len(vocabulary)
     data = tokenize_data(data=raw_data, tokenizer=tokenizer, to_tensor=True)
     n = int(0.8 * len(data))
     train_data, val_data = data[:n], data[n:]
@@ -44,11 +46,8 @@ def main():
         batch_size=BATCH_SIZE,
         block_size=BLOCK_SIZE,
     )
-    start = "\n"
-    enc = tiktoken.get_encoding("gpt2")
-    start_ids = enc.encode(start)
-    x = torch.tensor(start_ids, dtype=torch.long, device=DEVICE)[None, ...]
-    generated_tokens = model.generate(x, max_new_tokens=MAX_NEW_TOKENS)
+    idx_first = torch.zeros(1, 1, dtype=torch.long).to(DEVICE)
+    generated_tokens = model.generate(idx_first, max_new_tokens=MAX_NEW_TOKENS)
     output = tokenizer.decode(generated_tokens.tolist()[0])
     print(f"\nGenerated sequence:{output}")
 

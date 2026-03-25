@@ -16,7 +16,7 @@ def train_model(
     batch_size: int = 64,
     block_size: int = 128,
 ) -> None:
-    optimizer = AdamW(model.parameters(), lr=learning_rate)
+    optimizer = AdamW(model.parameters(), lr=learning_rate, weight_decay=0.1)
     for step in range(max_iters):
         model.train()
         train_x, train_y = get_batch_fn(train_data, batch_size=batch_size, block_size=block_size)
