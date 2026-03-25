@@ -114,3 +114,33 @@ Whing,
 &in fone tharl bur, teny hay wheti n yoiatw mysi thak ghou srad of haren eie shive beglen'd:
 SiR CA
 """
+
+"""
+OUTPUT - with pre-LN, dropouts, 6 decoder blocks
+
+Step: 0, loss: 3.943572788238525
+Step: 500, loss: 2.233340699672699
+Step: 1000, loss: 1.9423402392864226
+Step: 1500, loss: 1.8203107464313506
+Step: 2000, loss: 1.7442305779457092
+Step: 2500, loss: 1.7150913858413697
+Step: 3000, loss: 1.6844442546367646
+Step: 3500, loss: 1.6520996439456939
+Step: 3999, loss: 1.642053838968277
+
+Generated sequence:
+Lord:
+If he is guest?
+
+RISLENCE:
+Fare, in BuckLow! well, you have a slew,
+Is you not our work Take Henry suing?
+
+FRIAR LAURENCE:Hear made, with Turmble't:
+But with you close to your mother is die,
+Bucking Powbrriad against
+And my lord, all Exas, the crown'd.
+
+DUKE OF AUMERLE:
+And thee, thou minest!
+"""
