@@ -15,8 +15,6 @@ class DecoderBlock(nn.Module):
         self.ln2 = LayerNormalization(embed_dim=embed_dim)
 
     def forward(self, x):
-        x = self.ln1(x)
-        x = x + self.sa_attention(x)
-        x = self.ln2(x)
-        x = x + self.ff(x)
+        x = x + self.sa_attention(self.ln1(x))
+        x = x + self.ff(self.ln2(x))
         return x
