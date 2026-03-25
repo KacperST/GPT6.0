@@ -1,3 +1,4 @@
+import tiktoken
 import torch
 import numpy as np
 import torch.nn as nn
@@ -32,9 +33,22 @@ def main():
     train_data, val_data = data[:n], data[n:]
     model = GPT(VOCAB_SIZE, EMBEDING_DIM, BLOCK_SIZE, num_heads=NUM_HEADS, num_decoder_blocks=NUM_DECODER_BLOCKS)
     model = model.to(device=DEVICE)
-    train_model(model, train_data, val_data, get_batch, MAX_ITERS, evaluate_model, learning_rate=LEARNING_RATE)
-    idx_first = torch.zeros(1, 1, dtype=torch.long).to(DEVICE)
-    generated_tokens = model.generate(idx_first, max_new_tokens=MAX_NEW_TOKENS)
+    train_model(
+        model,
+        train_data,
+        val_data,
+        get_batch,
+        MAX_ITERS,
+        evaluate_model,
+        learning_rate=LEARNING_RATE,
+        batch_size=BATCH_SIZE,
+        block_size=BLOCK_SIZE,
+    )
+    start = "\n"
+    enc = tiktoken.get_encoding("gpt2")
+    start_ids = enc.encode(start)
+    x = torch.tensor(start_ids, dtype=torch.long, device=DEVICE)[None, ...]
+    generated_tokens = model.generate(x, max_new_tokens=MAX_NEW_TOKENS)
     output = tokenizer.decode(generated_tokens.tolist()[0])
     print(f"\nGenerated sequence:{output}")
 
