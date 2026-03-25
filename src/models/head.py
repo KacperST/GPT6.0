@@ -10,6 +10,7 @@ class Head(nn.Module):
         self.wk = nn.Linear(embed_dim, head_size, bias=False)
         self.wq = nn.Linear(embed_dim, head_size, bias=False)
         self.wv = nn.Linear(embed_dim, head_size, bias=False)
+        self.dropout = nn.Dropout(p=0.1)
         self.register_buffer("tril", torch.tril(torch.ones(block_size, block_size)))
 
     def forward(self, x):
@@ -21,5 +22,5 @@ class Head(nn.Module):
         wei = Q @ K.transpose(-2, -1) * head_dim**-0.5
         wei = wei.masked_fill(self.tril[:T, :T] == 0, float("-inf"))
         wei = F.softmax(wei, dim=-1)
-        wei = F.dropout(wei, p=0.1)
+        wei = self.dropout(wei)
         return wei @ V
